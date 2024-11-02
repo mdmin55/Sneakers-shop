@@ -1,14 +1,24 @@
 
 <script setup>
+import { inject } from 'vue';
 defineProps({
+  id:Number,
     title:String,
 imageUrl: String,
 price:Number,
 isFavorite: Boolean,
 isAdded: Boolean,
-onClickAdd: Function,
 onClickFavorite: Function
 });
+
+const addToFavorite = inject('addToFavorite')
+
+const onClickFavorite = () =>{
+  const obj = {
+    parentId: props.id
+  };
+  addToFavorite(obj);
+}
 </script>
 <template>
     <div class="relative bg-white border-slate-100 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover: shadow-xl">
