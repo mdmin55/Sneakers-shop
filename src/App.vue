@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, reactive,provide, watch} from 'vue';
+import { onMounted, ref, reactive,provide, watch, computed} from 'vue';
 import axios from 'axios';
 
 import Header from './components/Header.vue';
@@ -7,12 +7,47 @@ import CardList from './components/CardList.vue';
 import Drawer from './components/Drawer.vue';
 
 const items = ref([]);
+const cart = ref([]);
+
+const drawerOpen = ref(false)
+
+const totalPrice = computed(
+  ( )=> cart.value.reduce((acc, item) => acc + item.price, 0 )
+);
+
+const vatPrice = computed(
+()=> Math.round((totalPrice.value *5)/100)
+)
+
+const closeDrawer = ()=> {
+  drawerOpen.value = false
+}
+
+const openDrawer = ()=> {
+  drawerOpen.value = true
+}
 
 const filters = reactive({
   sortBy: 'title',
   searchQuery: '',
 })
 
+const addToCart = (item)=> {
+  cart.value.push(item)
+  item.isAdded = true
+}
+const removeFromCart= (item) => {
+  cart.value.splice(cart.value.indexOf(item),1 )
+  item.isAdded = false
+}
+const onClickAddPlus = (item) => {
+  if (!item.isAdded){
+    addToCart(item);
+  } else{
+    removeFromCart(item)
+  }
+  console.log(cart)
+}
 const onChangeSelect = (event) =>{
   filters.sortBy = event.target.value
 }
@@ -41,9 +76,27 @@ const fetchFavorites = async () =>{
     }
   }
 
-  const addToFavorote = async(item) =>{
-    item.isFavorite=true
+  const addToFavorite = async(item) =>{
+  try{
+ if (!item.isFavorite){
+  const obj = {
+       parentId: item.id
+    }
+  item.isFavorite = true
+  const {data } = await axios.post (`https://05d681b6ec2b8d1f.mokky.dev/favorites`, obj)
+   
+  item.favoriteId = data.id;
+ }else { 
+  item.isFavorite = false;
+  await axios.delete(`https://05d681b6ec2b8d1f.mokky.dev/favorites/${item.favoriteId}`)
+ 
+  item.favoriteId = null;
+}
+
+  } catch (err){
+    console.log(err)
   }
+}
 const fetchItems = async() => {
   try{
     const params ={
@@ -59,6 +112,7 @@ const fetchItems = async() => {
   items.value=data.map((obj)=> ({
     ...obj,
     isFavorite: false,
+    favoriteId:null,
     isAdded:false
   }));
     } catch (err){
@@ -71,13 +125,19 @@ await fetchFavorites();
 });
 
 watch(filters, fetchItems);
-provide('addToFavorite',addToFavorote);
+provide('cart',{
+  cart,
+  closeDrawer,
+  openDrawer,
+  addToCart,
+  removeFromCart
+});
 </script>
 
 <template>
-  <!-- <Drawer/> -->
+  <Drawer v-if="drawerOpen" :totalPrice="totalPrice" :vatPrice="vatPrice" />
 <div class="bg-white w-4/5 m-auto rounded-xl  shadow-xl mt-14">
- <Header/> 
+ <Header :total-price="totalPrice" @open-drawer="openDrawer"/> 
   <div class="p-10">
     <div class="flex justify-between ">
       <h2 class="text-3xl font-bold mb-8 ">Все кроссовки</h2>
@@ -91,12 +151,13 @@ provide('addToFavorite',addToFavorote);
   
         <div class="relative">
           <img class="absolute left-3 top-3" src="/search.svg"  />
-          <input @input="onChangeSearchInput" class="border rounded-md py-2 pl-11 pr-4 outline-none focus:border-gray-400" placeholder="Поиск...">
+          <input @input="onChangeSearchInput" 
+          class="border rounded-md py-2 pl-11 pr-4 outline-none focus:border-gray-400" placeholder="Поиск...">
         </div>
       </div>
    </div>
     <div class="mb-10">
-      <CardList  :items="items"/>
+      <CardList  :items="items" @addToFavorite="addToFavorite" @add-to-cart="onClickAddPlus"/>
     </div>
   </div>
 </div>
