@@ -20,6 +20,7 @@ onClickAdd:Function
 
         
         <img class="absolute top-8 left-8"
+        v-if="onClickFavorite"
          :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'" 
          alt="Favorite"  
          @click="onClickFavorite" />
@@ -31,7 +32,9 @@ onClickAdd:Function
             <span class="text-slate-400">Цена:</span>
             <b>{{price}}</b>
           </div>
-          <img @click="onClickAdd" :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
+          <img 
+          v-if="onClickAdd"
+          @click="onClickAdd" :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
         </div>
       </div>
 </template>
