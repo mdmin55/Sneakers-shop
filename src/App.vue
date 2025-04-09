@@ -42,11 +42,11 @@ provide('cart',{
   <Drawer v-if="drawerOpen" :totalPrice="totalPrice"
    :vatPrice="vatPrice" />
 <div class="bg-white w-4/5 m-auto rounded-xl  shadow-xl mt-14">
- <Header :total-price="totalPrice" @open-drawer="openDrawer"/> 
-  <div class="p-10">
-    <router-view></router-view>
-    <Footer /> 
-  </div>
+  <Header :total-price="totalPrice" @open-drawer="openDrawer"/> 
+    <div class="p-10">
+      <router-view></router-view>
+      <Footer /> 
+    </div>
 </div>
 
 </template>

@@ -63,7 +63,18 @@
       <p v-if="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
       <p class="text-center mt-4 text-black">
         Уже есть аккаунт?
-        <a href="/login" class="text-green-500 hover:text-green-700">Войти</a>
+        <router-link 
+        to="/login" 
+        custom 
+        v-slot="{ navigate }"
+      >
+        <a 
+          @click="navigate" 
+          class="text-green-500 hover:text-green-700"
+        >
+          Войти
+        </a>
+      </router-link>
       </p>
     </form>
   </div>
