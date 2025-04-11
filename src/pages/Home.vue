@@ -115,6 +115,7 @@ watch(filters, fetchItems)
 </script>
 
 <template>
+
   <div class="flex justify-between">
     <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
 
@@ -135,6 +136,7 @@ watch(filters, fetchItems)
       </div>
     </div>
   </div>
+  <img src="/public/flaer.png">
   <div class="mb-10">
     <CardList :items="items" @addToFavorite="addToFavorite" @add-to-cart="onClickAddPlus" />
   </div>

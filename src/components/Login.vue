@@ -30,7 +30,7 @@
       </div>
       <button
         type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline"
+        class="bg-[#9DD458] hover:bg-[#7AB52F] text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline"
       >
         Войти
       </button>

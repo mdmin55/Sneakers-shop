@@ -10,19 +10,26 @@
       <p class="text-[#9A9A9A]">Адрес: {{ authStore.userData.address }}</p>
       <p class="text-[#9A9A9A]">Номер телефона: {{ authStore.userData.phone }}</p>
 
-      <button
-        @click="isEditing = true"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-      >
-        Редактировать данные
-      </button>
-
-      <button
-        @click="logout"
-        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
-      >
-        Выйти
-      </button>
+      <div class="flex justify-end">
+        <button
+          @click="isEditing = true"
+          class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded mt-4 transition-colors duration-200 hover:bg-gray-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+          <span class="underline">Редактировать данные</span>
+        </button>
+      
+        <button
+          @click="logout"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
+        >
+          Выйти
+        </button>
+      </div>
+      
+     
       <div v-if="isEditing" class="mt-4">
         <!-- Форма редактирования профиля -->
         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Имя Фамилия:</label>
@@ -53,7 +60,7 @@
 
         <button
           @click="saveProfile"
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+          class="bg-[#9DD458] hover:bg-[#7AB52F] text-white font-bold py-2 px-4 rounded mr-2"
         >
           Сохранить
         </button>
