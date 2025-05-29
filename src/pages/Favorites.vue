@@ -11,12 +11,10 @@ const favorites = ref([])
 onMounted(async () => {
   try {
     const { data } = await axios.get(
-      'https://05d681b6ec2b8d1f.mokky.dev/favorites?_relations=items'
-    )
+      'https://05d681b6ec2b8d1f.mokky.dev/favorites?_relations=items')
     favorites.value = data.map((obj) => obj.item)
   } catch (err) {
-    console.log(err)
-  }
+    console.log(err)}
 })
 const fetchItems = async () => {
   try {
@@ -34,10 +32,8 @@ const fetchItems = async () => {
 
 const onClickAddPlus = (item) => {
   if (!item.isAdded) {
-    addToCart(item)
-  } else {
-    removeFromCart(item)
-  }
+    addToCart(item)} else {
+    removeFromCart(item)}
 }
 
 watch(cart, () => {

@@ -56,25 +56,18 @@
       </div>
       <button
         type="submit"
-        class="bg-[#9DD458] hover:bg-[#7AB52F] text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline"
+        class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline"
       >
         Зарегистрироваться
       </button>
       <p v-if="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
       <p class="text-center mt-4 text-black">
         Уже есть аккаунт?
-        <router-link 
-        to="/login" 
-        custom 
-        v-slot="{ navigate }"
-      >
-        <a 
-          @click="navigate" 
-          class="text-[#9DD458] hover:text-[#7AB52F]"
-        >
-          Войти
-        </a>
-      </router-link>
+        <router-link to="/login" custom v-slot="{ navigate }">
+          <a @click="navigate" class="text-green-600 hover:text-green-500 cursor-pointer">
+            Войти
+          </a>
+        </router-link>
       </p>
     </form>
   </div>
@@ -87,27 +80,23 @@ import { useAuthStore } from '../stores/authStore'
 
 const authStore = useAuthStore()
 const router = useRouter()
-
 const name = ref('')
 const email = ref('')
 const address = ref('')
 const phone = ref('')
 const password = ref('')
 const error = ref(null)
-
 const submitForm = async () => {
   // Валидация полей
   if (!name.value || !email.value || !address.value || !phone.value || !password.value) {
     error.value = 'Все поля обязательны для заполнения'
     return
   }
-
   // Проверка длины пароля
   if (password.value.length < 6) {
     error.value = 'Пароль должен содержать не менее 6 символов'
     return
   }
-
   try {
     // Проверка, существует ли пользователь с таким email или телефоном
     const userExists = await authStore.checkUserExists(email.value, phone.value)
@@ -117,7 +106,6 @@ const submitForm = async () => {
 
       return
     }
-
     // Вызов метода регистрации из хранилища
     await authStore.register({
       name: name.value,
@@ -127,14 +115,12 @@ const submitForm = async () => {
       password: password.value,
       isAdmin: false
     })
-
     // Очистка формы после успешной регистрации
     name.value = ''
     email.value = ''
     address.value = ''
     phone.value = ''
     password.value = ''
-
     // Перенаправление на страницу профиля
     router.push('/Profil')
   } catch (err) {
